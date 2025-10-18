@@ -104,6 +104,13 @@ ReferenceViewer.createViewer = function(title)
 				-- Updates the value of the slider with the actual value of scale_factor.
 				dlg:modify{id="scale_slider", value=scale_factor*100}
 
+                -- Clamp image position to avoid showing empty areas.
+                local min_display_pixels = 2 * inv_scale_factor
+                image_pos.x = math.max(image_pos.x, -gc.width * inv_scale_factor + min_display_pixels)
+                image_pos.x = math.min(image_pos.x, active_image.width - min_display_pixels)
+                image_pos.y = math.max(image_pos.y, -gc.height * inv_scale_factor + min_display_pixels)
+                image_pos.y = math.min(image_pos.y, active_image.height - min_display_pixels)
+
 				local image
 				-- When we zoom-in (scale_factor > fit_scale) we only
 				-- see a part of the image. We only copy what is visible
